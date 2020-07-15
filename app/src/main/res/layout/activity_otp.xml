@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/bg_gray"
+    android:layout_height="match_parent"
+    tools:context=".Activities.OtpActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/Rl_Header"
+
+        android:background="@color/colorPrimary"
+
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+
+        <TextView
+            android:id="@+id/tv_title"
+           android:textStyle="bold"
+            android:gravity="center"
+            android:text="Verification"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"/>
+        <ImageView
+            android:id="@+id/iv_back"
+            android:tint="@color/white"
+            android:rotation="180"
+            android:src="@drawable/ic_baseline_arrow_forward_24"
+            android:layout_width="30dp"
+
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_height="30dp"/>
+    </RelativeLayout>
+
+
+
+    <androidx.core.widget.NestedScrollView
+        android:fillViewport="true"
+        android:layout_below="@+id/Rl_Header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+
+                android:layout_marginTop="15dp"
+                android:src="@drawable/otp"
+                android:id="@+id/iv_logo"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"/>
+
+
+            <TextView
+                android:id="@+id/tv_enter_verification_code"
+                android:textSize="16sp"
+
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:text="Enter the verification code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+            <LinearLayout
+                android:gravity="center"
+                android:id="@+id/LL_Otp_Fields"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <EditText
+                    android:id="@+id/et_one"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/otp_et"
+                    android:inputType="number"
+                  android:textStyle="bold"
+                    android:hint="0"
+                    android:digits="0123456789"
+                    android:maxLength="1"
+                    android:gravity="center"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
+                <EditText
+                    android:id="@+id/et_two"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    android:background="@drawable/otp_et"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:maxLength="1"
+                    android:hint="0"
+                    android:inputType="number"
+                    android:digits="0123456789"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
+                <EditText
+                    android:id="@+id/et_three"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    android:background="@drawable/otp_et"
+                    android:gravity="center"
+                    android:hint="0"
+                    android:textStyle="bold"
+                    android:maxLength="1"
+                    android:inputType="number"
+                    android:digits="0123456789"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
+                <EditText
+                    android:id="@+id/et_four"
+                    android:inputType="number"
+                    android:digits="0123456789"
+                    android:layout_marginEnd="15dp"
+                    android:hint="0"
+                    android:textStyle="bold"
+                    android:layout_marginStart="15dp"
+                    android:background="@drawable/otp_et"
+                    android:gravity="center"
+                    android:maxLength="1"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textAllCaps="true"
+                android:layout_marginEnd="60dp"
+                android:layout_marginStart="60dp"
+
+                android:text="Verify"
+                android:id="@+id/tv_verify"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:background="@drawable/solid_bt"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_OtpTimer"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/black"
+                android:layout_marginRight="10dp"
+                android:textAlignment="center"
+                android:layout_marginTop="20dp"
+                android:visibility="visible"
+
+                android:text="Didn't receive the OTP? Request for a new one in"/>
+
+            <TextView
+                android:id="@+id/tv_resend_code"
+                android:textSize="13sp"
+
+                android:layout_marginTop="15dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:paddingEnd="25dp"
+                android:layout_gravity="center"
+                android:paddingStart="25dp"
+                android:visibility="gone"
+                android:background="@drawable/solid_bt"
+                android:text="Resend Code"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

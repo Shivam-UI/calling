@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Two Wink</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="Rs">\u20B9</string>
+    <string name="agora_app_id">bf5eab4d0b2c45b08de42cc131218f64</string>
+</resources>

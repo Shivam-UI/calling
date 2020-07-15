@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    tools:context=".Activities.LoginActivity">
+
+    <LinearLayout
+        android:layout_margin="15dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_close_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="TODO" />
+
+        <TextView
+            android:layout_marginTop="25dp"
+            android:textSize="18sp"
+            android:text="Login"
+            android:textStyle="bold"
+            android:textColor="@color/primarycolor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="25dp"
+            app:boxCornerRadiusBottomEnd="40dp"
+            app:boxCornerRadiusTopStart="40dp"
+            app:boxCornerRadiusBottomStart="40dp"
+            app:boxCornerRadiusTopEnd="40dp"
+
+            app:errorEnabled="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="53dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_username"
+                android:background="@null"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textSize="15sp"
+                android:maxLength="50"
+                android:paddingStart="20dp"
+                android:hint="User Name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="25dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            app:boxCornerRadiusBottomEnd="40dp"
+            app:boxCornerRadiusTopStart="40dp"
+            app:boxCornerRadiusBottomStart="40dp"
+            app:boxCornerRadiusTopEnd="40dp"
+            app:errorEnabled="true"
+            app:passwordToggleEnabled="true"
+            android:background="@null"
+            android:layout_height="53dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_password"
+                android:background="@drawable/et_bg"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:maxLength="15"
+                android:imeOptions="actionDone"
+                android:textSize="15sp"
+                android:paddingStart="20dp"
+                android:hint="Password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_forgot_password"
+            android:layout_marginTop="15dp"
+          android:layout_gravity="center"
+            android:text="Forgot Password?"
+            android:textStyle="bold"
+            android:textColor="@color/primarycolor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/iv_Login"
+            android:layout_margin="30dp"
+            android:layout_gravity="end"
+            android:padding="20dp"
+            android:tint="@color/white"
+            android:background="@drawable/circle_bt"
+            android:src="@drawable/ic_baseline_arrow_forward_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="TODO" />
+    </LinearLayout>
+    <View
+
+        android:id="@+id/divider"
+        android:layout_above="@id/LL_Bottom"
+        android:background="@color/bg_gray"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"/>
+    <LinearLayout
+        android:id="@+id/LL_Bottom"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+
+
+        <TextView
+
+            android:text="Don't have an account?"
+            android:gravity="center"
+            android:textColor="@color/dark_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+
+            android:id="@+id/tv_go_to_signup"
+
+            android:text="Sign Up"
+            android:textStyle="bold"
+            android:textColor="@color/primarycolor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</RelativeLayout>

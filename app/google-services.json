@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1009436298943",
+    "firebase_url": "https://two-wink.firebaseio.com",
+    "project_id": "two-wink",
+    "storage_bucket": "two-wink.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009436298943:android:2c3195c410f6927be2000a",
+        "android_client_info": {
+          "package_name": "com.lgt.twowink"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1009436298943-rv36sgnl7cu1bgis5avfhambljc2ae51.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA59RM16DvGDCEtCQl4V0GY76FASkDrdwA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1009436298943-rv36sgnl7cu1bgis5avfhambljc2ae51.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
