@@ -85,7 +85,11 @@ public class ChatFragment extends Fragment {
                 if (snapshot.exists()){
 
                     CurrentConversationModel model=snapshot.getValue(CurrentConversationModel.class);
-                    chat_convers_list.add(model);
+                    if (model.getFrom().equalsIgnoreCase(sessionManager.getUser(getActivity()).getUser_id())){
+                       // holder.itemView.setVisibility(View.GONE);
+                    }else {
+                        chat_convers_list.add(model);
+                    }
 
                     setAdapter();
                     if (chat_convers_list.size()==0){

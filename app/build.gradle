@@ -72,6 +72,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
     // alert lib
     implementation 'com.tapadoo.android:alerter:3.0.0'
+    // sweet alert lib
+    implementation 'com.github.f0ris.sweetalert:library:1.5.1'
 
     implementation 'io.agora.rtc:full-sdk:3.0.0'
 

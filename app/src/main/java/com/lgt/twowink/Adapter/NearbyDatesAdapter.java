@@ -74,6 +74,7 @@ public class NearbyDatesAdapter extends RecyclerView.Adapter<NearbyDatesAdapter.
                 firebaseIdService = new MyFirebaseIdService();
                 Intent intent = new Intent(context, VideoCallingActivity.class);
                 intent.putExtra(Commn.USER_ID,model.getUser_id());
+                intent.putExtra("Caller_name",model.getUser_name());
                 intent.putExtra("mUser",sessionManager.getUser(Objects.requireNonNull(context)).getUser_id());
                 context.startActivity(intent);
             }

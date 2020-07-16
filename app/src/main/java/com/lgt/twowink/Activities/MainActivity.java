@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements UpdateUserDetails
         if (Build.VERSION.SDK_INT >= 23) {
             checkPermissions();
         }
-
+        isUserOnline(user_id);
     }
 
     private void updateToken(String token){
@@ -148,8 +148,6 @@ public class MainActivity extends AppCompatActivity implements UpdateUserDetails
 
             replaceFragment(new HomeFragment(), FRAGMENT_HOME);
             startService(new Intent(MainActivity.this, UpdateLocation.class));
-
-
         }
         return true;
     }
@@ -166,5 +164,33 @@ public class MainActivity extends AppCompatActivity implements UpdateUserDetails
             }
             return;
         }
+    }
+
+    public static void customNotification(){
+
+    }
+
+    public static void isUserOnline(String mid){
+        DatabaseReference online_status_all_users = FirebaseDatabase.getInstance().getReference().child("online_statuses").child(mid);
+        online_status_all_users.child("status").setValue("online");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        onTerminate(user_id);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        onTerminate(user_id);
+    }
+
+
+
+    public void onTerminate(String mid) {
+        DatabaseReference online_status_all_users = FirebaseDatabase.getInstance().getReference().child("online_statuses").child(mid);
+        online_status_all_users.child("status").onDisconnect().setValue("offline");
     }
 }

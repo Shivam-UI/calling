@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -55,6 +56,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.agora.rtc.Constants;
 import io.agora.rtc.IRtcEngineEventHandler;
 import io.agora.rtc.RtcEngine;
@@ -71,7 +73,7 @@ public class VideoCallingActivity extends AppCompatActivity {
     private static final String TAG = VideoCallingActivity.class.getSimpleName();
     private static ScheduledExecutorService timer;
     private static final int PERMISSION_REQ_ID = 22;
-    private static String customer_id, current_user_id, Calling_time;
+    private static String customer_id, current_user_id, Calling_time,caller_name;
     Calendar cal;
     private static int user_history_token = 0;
     Intent intent;
@@ -182,7 +184,7 @@ public class VideoCallingActivity extends AppCompatActivity {
                 public void run() {
                     onRemoteUserLeft();
                     Toast.makeText(VideoCallingActivity.this, "Call End", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(VideoCallingActivity.this,MainActivity.class));
+                    startActivity(new Intent(VideoCallingActivity.this, MainActivity.class));
                     finishAffinity();
                 }
             });
@@ -245,6 +247,7 @@ public class VideoCallingActivity extends AppCompatActivity {
         intent = getIntent();
         customer_id = intent.getStringExtra(Commn.USER_ID);
         current_user_id = intent.getStringExtra("mUser");
+        caller_name = intent.getStringExtra("Caller_name");
         handler = new Handler();
         delay();
         // timer.scheduleAtFixedRate(calling, 1, 1, TimeUnit.MINUTES);
@@ -258,7 +261,7 @@ public class VideoCallingActivity extends AppCompatActivity {
         }
     }
 
-    CountDownTimer countDownTimer=new CountDownTimer(60*60*60*1000,60*1000) {
+    CountDownTimer countDownTimer = new CountDownTimer(60 * 60 * 60 * 1000, 60 * 1000) {
         @Override
         public void onTick(long l) {
 
@@ -276,7 +279,7 @@ public class VideoCallingActivity extends AppCompatActivity {
             public void run() {
                 Log.d("user", customer_id + " -> " + current_user_id + " is_calling. " + cal.getTime());
                 callStarting("Call", current_user_id);
-                handler.postDelayed(runnable,60*1000);
+                handler.postDelayed(runnable, 60 * 1000);
             }
         };
         handler.postDelayed(runnable, 60 * 1000);
@@ -397,9 +400,9 @@ public class VideoCallingActivity extends AppCompatActivity {
             token = null; // default, no token
         }*/
         mRtcEngine.joinChannel(token, AgoraConfig.APP_Channel, "Extra Optional Data", 0);
-        if (getIntent().getBooleanExtra("KEY_NOTI",false)){
+        if (getIntent().getBooleanExtra("KEY_NOTI", false)) {
 
-        }else{
+        } else {
             sendNotification();
         }
 
@@ -414,7 +417,7 @@ public class VideoCallingActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d("sp", " | " + dataSnapshot);
                 Token token = dataSnapshot.getValue(Token.class);
-                Data data = new Data(current_user_id, R.drawable.icon, "Notification Body",
+                Data data = new Data(current_user_id, R.drawable.icon, caller_name,
                         customer_id);
 
                 Sender sender = new Sender(data, token.getUser_token());
@@ -432,12 +435,6 @@ public class VideoCallingActivity extends AppCompatActivity {
                                 Log.d("Error", call + " " + t.getStackTrace());
                             }
                         });
-               /* for (DataSnapshot snap : dataSnapshot.getChildren()){
-                    Log.d("",""+snap);
-                }*/
-               /* for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
-                }*/
             }
 
             @Override
@@ -529,6 +526,27 @@ public class VideoCallingActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(response);
                     String message = jsonObject.getString("message");
                     String status = jsonObject.getString("status");
+                    Log.d("balance", "" + message);
+                    if (status.equals("0")) {
+                        SweetAlertDialog pDialog = new SweetAlertDialog(VideoCallingActivity.this, SweetAlertDialog.WARNING_TYPE);
+                        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                        pDialog.setTitleText(message);
+                        pDialog.setCancelable(true);
+                        pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                                startActivity(new Intent(VideoCallingActivity.this, PackagesListActivity.class));
+                            }
+                        });
+                        pDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        });
+                        pDialog.show();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

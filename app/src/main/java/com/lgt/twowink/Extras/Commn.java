@@ -38,6 +38,17 @@ public class Commn {
     public static String Tokens="Tokens";
     public static String user_token="user_token";
 
+    // notification keys
+    public static final String NOTIFICATION_REPLY = "NotificationReply";
+    public static final String CHANNNEL_ID = "SimplifiedCodingChannel";
+    public static final String CHANNEL_NAME = "SimplifiedCodingChannel";
+    public static final String CHANNEL_DESC = "This is a channel for Simplified Coding Notifications";
+    public static final String KEY_INTENT_MORE = "keyintentmore";
+    public static final String KEY_INTENT_HELP = "keyintenthelp";
+    public static final int REQUEST_CODE_MORE = 100;
+    public static final int REQUEST_CODE_HELP = 101;
+    public static final int NOTIFICATION_ID = 200;
+
 
     public static   String[] storage_permission = new String[]{
             Manifest.permission.WRITE_EXTERNAL_STORAGE,

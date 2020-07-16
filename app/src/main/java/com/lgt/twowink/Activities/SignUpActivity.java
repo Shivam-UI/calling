@@ -49,6 +49,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class SignUpActivity extends AppCompatActivity {
     private TextView tv_go_to_login;
     private Context context;
@@ -249,6 +251,8 @@ public class SignUpActivity extends AppCompatActivity {
 
                         saveUserDetail(user_id,name,user_name,mobile,call_coin,chat_coin,refer_code,user_image);
 
+                    } else if(status.equals("0")){
+                        Commn.myToast(context,message);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
