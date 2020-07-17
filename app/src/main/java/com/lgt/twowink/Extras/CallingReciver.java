@@ -18,22 +18,6 @@ public class CallingReciver extends BroadcastReceiver {
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
         mContext = context;
-        Alerter.create((Activity) context)
-                .setTitle("")
-                .setText("")
-                .addButton("Answer", R.style.AlertButton, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(mContext, "Answer", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addButton("Decline", R.style.AlertButton, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(mContext, "Decline", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .show();
         throw new UnsupportedOperationException("Not yet implemented");
     }
 }

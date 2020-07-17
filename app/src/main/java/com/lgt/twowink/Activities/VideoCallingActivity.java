@@ -73,8 +73,9 @@ public class VideoCallingActivity extends AppCompatActivity {
     private static final String TAG = VideoCallingActivity.class.getSimpleName();
     private static ScheduledExecutorService timer;
     private static final int PERMISSION_REQ_ID = 22;
-    private static String customer_id, current_user_id, Calling_time,caller_name;
+    private static String customer_id, current_user_id, Calling_time, caller_name;
     Calendar cal;
+    boolean isChecked;
     private static int user_history_token = 0;
     Intent intent;
     // Permission WRITE_EXTERNAL_STORAGE is not mandatory
@@ -248,6 +249,7 @@ public class VideoCallingActivity extends AppCompatActivity {
         customer_id = intent.getStringExtra(Commn.USER_ID);
         current_user_id = intent.getStringExtra("mUser");
         caller_name = intent.getStringExtra("Caller_name");
+        Log.d("call_m", "" + caller_name);
         handler = new Handler();
         delay();
         // timer.scheduleAtFixedRate(calling, 1, 1, TimeUnit.MINUTES);
@@ -400,12 +402,7 @@ public class VideoCallingActivity extends AppCompatActivity {
             token = null; // default, no token
         }*/
         mRtcEngine.joinChannel(token, AgoraConfig.APP_Channel, "Extra Optional Data", 0);
-        if (getIntent().getBooleanExtra("KEY_NOTI", false)) {
-
-        } else {
-            sendNotification();
-        }
-
+        isChecked = getIntent().getBooleanExtra("KEY_NOTI", false);
     }
 
     private void sendNotification() {
@@ -415,11 +412,10 @@ public class VideoCallingActivity extends AppCompatActivity {
         tokens.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("sp", " | " + dataSnapshot);
                 Token token = dataSnapshot.getValue(Token.class);
                 Data data = new Data(current_user_id, R.drawable.icon, caller_name,
                         customer_id);
-
+                Log.d("sp", token.getUser_token() + " | " + dataSnapshot);
                 Sender sender = new Sender(data, token.getUser_token());
                 APIService apiService = Client.getClient(Commn.FIREBASE_URL).create(APIService.class);
                 apiService.sendNotification(sender)
@@ -527,7 +523,12 @@ public class VideoCallingActivity extends AppCompatActivity {
                     String message = jsonObject.getString("message");
                     String status = jsonObject.getString("status");
                     Log.d("balance", "" + message);
-                    if (status.equals("0")) {
+                    if (status.equals("1")) {
+                        if (isChecked) {
+                        } else {
+                            sendNotification();
+                        }
+                    } else if (status.equals("0")) {
                         SweetAlertDialog pDialog = new SweetAlertDialog(VideoCallingActivity.this, SweetAlertDialog.WARNING_TYPE);
                         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
                         pDialog.setTitleText(message);

@@ -30,7 +30,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mons_regular"
                     android:text="+91 9999870918"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    style="@style/TextAppearance.Compat.Notification.Title"/>
 
                 <TextView
                     android:layout_width="wrap_content"

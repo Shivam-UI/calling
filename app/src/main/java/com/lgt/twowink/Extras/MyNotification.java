@@ -39,6 +39,7 @@ import static com.lgt.twowink.Extras.Commn.NOTIFICATION_ID;
 import static com.lgt.twowink.Extras.Commn.NOTIFICATION_REPLY;
 import static com.lgt.twowink.Extras.Commn.REQUEST_CODE_HELP;
 import static com.lgt.twowink.Extras.Commn.REQUEST_CODE_MORE;
+import static com.lgt.twowink.Extras.OreoPersonalNotification.CHANNEL_ID;
 
 public class MyNotification extends FirebaseMessagingService {
     Uri notification;
@@ -55,7 +56,7 @@ public class MyNotification extends FirebaseMessagingService {
             notifManager = (NotificationManager) getSystemService
                     (Context.NOTIFICATION_SERVICE);
         }
-        Log.e("onMessageReceived",remoteMessage.getData()+"");
+        Log.e("onMessageReceived",remoteMessage.getData()+" | "+remoteMessage.getData().get("body"));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             commonNotification(remoteMessage);
         }else{
@@ -139,16 +140,6 @@ public class MyNotification extends FirebaseMessagingService {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     private void commonNotification(RemoteMessage remoteMessage){
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Intent intent = new Intent(this, VideoCallingActivity.class);
-            intent.putExtra(Commn.USER_ID,remoteMessage.getData().get("customer_id"));
-            intent.putExtra("mUser",remoteMessage.getData().get("current_user_id"));
-            intent.putExtra("KEY_NOTI",true);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            PendingIntent pendingIntent;
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            pendingIntent = PendingIntent.getActivity(this, 1251, intent, PendingIntent.FLAG_ONE_SHOT);
-        }*/
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationManager mNotificationManager =
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -162,53 +153,64 @@ public class MyNotification extends FirebaseMessagingService {
             mNotificationManager.createNotificationChannel(mChannel);
         }
 
-        PendingIntent morePendingIntent = PendingIntent.getBroadcast(
-                this,
-                REQUEST_CODE_MORE,
-                new Intent(this, VideoCallingActivity.class)
-                        .putExtra(KEY_INTENT_MORE, REQUEST_CODE_MORE),
-                PendingIntent.FLAG_UPDATE_CURRENT
-        );
+        Intent intent = new Intent(this, VideoCallingActivity.class);
+        intent.putExtra(Commn.USER_ID,remoteMessage.getData().get("customer_id"));
+        intent.putExtra("mUser",remoteMessage.getData().get("current_user_id"));
+        intent.putExtra("KEY_NOTI",true);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        //Pending intent for a notification button help
-        PendingIntent helpPendingIntent = PendingIntent.getBroadcast(
-                this,
-                REQUEST_CODE_HELP,
-                new Intent(this, MainActivity.class)
-                        .putExtra(KEY_INTENT_HELP, REQUEST_CODE_HELP),
-                PendingIntent.FLAG_UPDATE_CURRENT
-        );
+        PendingIntent pendingIntent;
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        pendingIntent = PendingIntent.getActivity(this, 1251, intent, PendingIntent.FLAG_ONE_SHOT);
 
-        /*RemoteInput remoteInput = new RemoteInput.Builder(NOTIFICATION_REPLY)
-                .setLabel("Please enter your name")
-                .build();
 
-        NotificationCompat.Action action =
-                new NotificationCompat.Action.Builder(android.R.drawable.ic_delete,
-                        "Reply Now...", helpPendingIntent)
-                        .addRemoteInput(remoteInput)
-                        .build();*/
+        Intent fullScreenIntent = new Intent(this, VideoCallingActivity.class);
+        PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(this, 0,
+                fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         try {
-            notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+            notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
             r = RingtoneManager.getRingtone(getApplicationContext(), notification);
             r.play();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //Creating the notifiction builder object
+        // Creating the notification builder object
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNNEL_ID)
-                .setSmallIcon(android.R.drawable.ic_dialog_email)
-                .setContentTitle(remoteMessage.getData().get("caller_name"))
-                //.setContentText(remoteMessage.getData().get("customer_id"))
-                .setAutoCancel(false)
-                .setContentIntent(helpPendingIntent)
-                //.addAction(action)
-                .addAction(android.R.drawable.ic_menu_compass, "Answer", morePendingIntent)
-                .addAction(android.R.drawable.ic_menu_directions, "Decline", helpPendingIntent);
-
+                .setSmallIcon(android.R.drawable.ic_menu_call)
+                .setContentTitle(remoteMessage.getData().get("body"))
+                .setContentText(remoteMessage.getData().get("body")+" is calling...")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_CALL)
+                .setFullScreenIntent(fullScreenPendingIntent, true)
+                .addAction(android.R.drawable.ic_menu_compass, "Answer", pendingIntent)
+                .addAction(android.R.drawable.ic_menu_directions, "Decline", getDismissIntent(CHANNEL_ID,this,notifManager));
 
         //finally displaying the notification
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+        notifManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notifManager.notify(NOTIFICATION_ID, mBuilder.build());
+    }
+
+    public void remoteviewNotification(){
+        // Get the layouts to use in the custom notification
+        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_alert);
+
+        Notification customNotification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.icon)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                .setCustomContentView(notificationLayout)
+                .build();
+
+    }
+
+    public static PendingIntent getDismissIntent(String ch_Id, Context context,NotificationManager nf) {
+        nf.cancel(Integer.parseInt(ch_Id));
+        Intent intent = new Intent(context, MyNotification.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("CH_ID", ch_Id);
+        Log.e("gdvsghdv","hsdghs");
+        PendingIntent dismissIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        return dismissIntent;
     }
 }

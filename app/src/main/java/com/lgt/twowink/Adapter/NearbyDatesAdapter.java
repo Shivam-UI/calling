@@ -74,8 +74,9 @@ public class NearbyDatesAdapter extends RecyclerView.Adapter<NearbyDatesAdapter.
                 firebaseIdService = new MyFirebaseIdService();
                 Intent intent = new Intent(context, VideoCallingActivity.class);
                 intent.putExtra(Commn.USER_ID,model.getUser_id());
-                intent.putExtra("Caller_name",model.getUser_name());
+                intent.putExtra("Caller_name",sessionManager.getUser(Objects.requireNonNull(context)).getUser_name());
                 intent.putExtra("mUser",sessionManager.getUser(Objects.requireNonNull(context)).getUser_id());
+                Log.d("who's_calling",""+sessionManager.getUser(Objects.requireNonNull(context)).getUser_name());
                 context.startActivity(intent);
             }
         });
@@ -89,8 +90,6 @@ public class NearbyDatesAdapter extends RecyclerView.Adapter<NearbyDatesAdapter.
                     intent.putExtra(Commn.user_image,model.getUser_image());
                     Log.e("from_key",model.getUser_id()+",");
                     context.startActivity(intent);
-
-
             }
         });
     }
