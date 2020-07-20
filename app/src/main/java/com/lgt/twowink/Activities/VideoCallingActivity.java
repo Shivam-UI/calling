@@ -537,7 +537,9 @@ public class VideoCallingActivity extends AppCompatActivity {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
                                 sDialog.dismissWithAnimation();
-                                startActivity(new Intent(VideoCallingActivity.this, PackagesListActivity.class));
+                                Intent packageList = new Intent(VideoCallingActivity.this, PackagesListActivity.class);
+                                packageList.putExtra("KEY_TYPE","Call");
+                                startActivity(packageList);
                             }
                         });
                         pDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {

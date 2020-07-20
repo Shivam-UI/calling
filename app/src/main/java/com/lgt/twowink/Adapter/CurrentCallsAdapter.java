@@ -48,7 +48,7 @@ public class CurrentCallsAdapter extends RecyclerView.Adapter<CurrentCallsAdapte
             Glide.with(context).load(model.getUser_image()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.iv_user_image);
 
             holder.tv_user_name.setText(model.getUser_name());
-
+            holder.tv_last_msg_time.setText(model.getLast_msg());
             holder.iv_start_video_call.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -64,18 +64,18 @@ public class CurrentCallsAdapter extends RecyclerView.Adapter<CurrentCallsAdapte
 
     @Override
     public int getItemCount() {
-
         return list.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView iv_user_image,iv_start_video_call;
-        private TextView tv_user_name;
+        private TextView tv_user_name,tv_last_msg_time;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             iv_user_image=itemView.findViewById(R.id.iv_user_image);
+            tv_last_msg_time=itemView.findViewById(R.id.tv_last_msg_time);
             tv_user_name=itemView.findViewById(R.id.tv_user_name);
             iv_start_video_call=itemView.findViewById(R.id.iv_start_video_call);
 

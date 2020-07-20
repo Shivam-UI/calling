@@ -88,6 +88,7 @@ public class NearbyDatesAdapter extends RecyclerView.Adapter<NearbyDatesAdapter.
                     intent.putExtra(Commn.USER_ID,model.getUser_id());
                     intent.putExtra(Commn.user_name,model.getUser_name());
                     intent.putExtra(Commn.user_image,model.getUser_image());
+                    intent.putExtra("KEY_TYPE","Message");
                     Log.e("from_key",model.getUser_id()+",");
                     context.startActivity(intent);
             }

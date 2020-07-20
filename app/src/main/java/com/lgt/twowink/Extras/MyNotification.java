@@ -192,20 +192,26 @@ public class MyNotification extends FirebaseMessagingService {
         notifManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 
-    public void remoteviewNotification(){
+    public void remoteViewNotification(RemoteMessage remoteMessage){
         // Get the layouts to use in the custom notification
         RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_alert);
 
-        Notification customNotification = new NotificationCompat.Builder(this, CHANNEL_ID)
+        // Creating the notification builder object
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNNEL_ID)
                 .setSmallIcon(R.drawable.icon)
-                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomContentView(notificationLayout)
-                .build();
+                //.setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_CALL)
+                .setContentTitle(remoteMessage.getData().get("body"))
+                .setContentText(remoteMessage.getData().get("body")+" is calling...")
+                .setContent(notificationLayout);
+
+        notifManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notifManager.notify(NOTIFICATION_ID,mBuilder.build());
 
     }
 
     public static PendingIntent getDismissIntent(String ch_Id, Context context,NotificationManager nf) {
-        nf.cancel(Integer.parseInt(ch_Id));
         Intent intent = new Intent(context, MyNotification.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("CH_ID", ch_Id);

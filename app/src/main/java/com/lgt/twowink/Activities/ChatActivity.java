@@ -114,7 +114,7 @@ public class ChatActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(typed_message)) {
                     Commn.myToast(context, "Can't send empty message");
                 } else {
-
+                    Log.e("eeeeeeee",sessionManager.getUser(context).getChat_coin());
                     if (Integer.parseInt(sessionManager.getUser(context).getChat_coin()) > 0) {
                         startChat();
                     } else {
@@ -143,6 +143,7 @@ public class ChatActivity extends AppCompatActivity {
             userDetails.setRefer_code(sessionManager.getUser(context).getRefer_code());
             userDetails.setUser_image(user_image);
             sessionManager.setUser(context, userDetails);
+            SessionManager.saveUser(context,"true");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -157,7 +158,10 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(SweetAlertDialog sDialog) {
                 sDialog.dismissWithAnimation();
-                startActivity(new Intent(ChatActivity.this, PackagesListActivity.class));
+                Intent alert_chat = new Intent(ChatActivity.this, PackagesListActivity.class);
+                alert_chat.putExtra("KEY_CHAT","Chat");
+                alert_chat.putExtra("KEY_TYPE","Message");
+                startActivity(alert_chat);
             }
         });
         pDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -262,8 +266,6 @@ public class ChatActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -290,8 +292,6 @@ public class ChatActivity extends AppCompatActivity {
 
         DatabaseReference reference = database.getReference();
         String currentUserRef = Commn.Current_Chat_Users + "/" + sessionManager.getUser(context).getUser_id();
-
-
         Map messageMap = new HashMap();
 
         messageMap.put(Commn.user_image, sessionManager.getUser(context).getUser_image());

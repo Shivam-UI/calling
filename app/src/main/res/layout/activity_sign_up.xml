@@ -102,7 +102,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="20dp"
+            app:boxCornerRadiusBottomEnd="40dp"
+            app:boxCornerRadiusTopStart="40dp"
+            app:boxCornerRadiusBottomStart="40dp"
+            app:boxCornerRadiusTopEnd="40dp"
+            app:errorEnabled="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="53dp">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_gender"
+                android:background="@null"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:textSize="15sp"
+                android:inputType="phone"
+                android:maxLength="13"
+                android:paddingStart="20dp"
+                android:text="Male Only"
+                android:enabled="false"
+                android:singleLine="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_marginTop="20dp"
             app:boxCornerRadiusBottomEnd="40dp"

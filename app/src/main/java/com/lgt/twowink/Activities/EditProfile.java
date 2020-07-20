@@ -195,7 +195,7 @@ public class EditProfile extends AppCompatActivity {
             userDetails.setUser_image(user_image);
 
             sessionManager.setUser(context,userDetails);
-            ProfileFragment.getInstance().setDeatils();
+            ProfileFragment.getInstance().getUserData();
 
             updateData(name,user_image);
 

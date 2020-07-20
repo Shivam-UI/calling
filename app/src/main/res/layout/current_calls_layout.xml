@@ -40,7 +40,6 @@
             <TextView
 
                 android:id="@+id/tv_last_msg_time"
-
                 android:text="12 min ago"
                android:layout_marginTop="10dp"
                 android:maxLines="1"

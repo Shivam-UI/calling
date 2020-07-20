@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -44,7 +45,7 @@ public class PackagesListActivity extends AppCompatActivity {
     private Context context;
     private PackagesListActivity activity;
     private SwipeRefreshLayout package_swipe_refresh;
-
+    private Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,10 +53,9 @@ public class PackagesListActivity extends AppCompatActivity {
 
         context=activity=this;
         iniViews();
-
+        intent = getIntent();
+        Log.d("from_",intent.getStringExtra("KEY_TYPE"));
         setOnSwipeRefresh();
-
-
     }
 
 
@@ -94,7 +94,7 @@ public class PackagesListActivity extends AppCompatActivity {
 
         package_list.clear();
         prgressbar.setVisibility(View.VISIBLE);
-        StringRequest stringRequest=new StringRequest(Request.Method.GET, MyApi.package_list_api, new Response.Listener<String>() {
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, MyApi.package_list_api, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 package_swipe_refresh.setRefreshing(false);
@@ -121,14 +121,14 @@ public class PackagesListActivity extends AppCompatActivity {
                             }
                             setPackageAdapter(package_list);
                         }
+                    }else if(status.equalsIgnoreCase("0")){
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
                     }
 
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -136,7 +136,14 @@ public class PackagesListActivity extends AppCompatActivity {
                 prgressbar.setVisibility(View.GONE);
                 Commn.myToast(context,error.getMessage()+"");
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> param = new HashMap<>();
+                param.put("type",""+intent.getStringExtra("KEY_TYPE"));
+                return param;
+            }
+        };
         Commn.requestQueue(getApplicationContext(),stringRequest);
 
 

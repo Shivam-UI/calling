@@ -53,15 +53,12 @@ public class ChatFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_chat, container, false);
+        Commn.showDialog(view.getContext());
         iniViews(view);
         loadNearbyDates();
         return view;
@@ -90,7 +87,7 @@ public class ChatFragment extends Fragment {
                     }else {
                         chat_convers_list.add(model);
                     }
-
+                    Commn.hideDialog(getContext());
                     setAdapter();
                     if (chat_convers_list.size()==0){
                         tv_conversation.setVisibility(View.VISIBLE);
@@ -98,9 +95,6 @@ public class ChatFragment extends Fragment {
                         tv_conversation.setVisibility(View.GONE);
                     }
                 }
-
-
-
             }
 
             @Override
@@ -123,8 +117,6 @@ public class ChatFragment extends Fragment {
 
             }
         });
-
-
     }
 
     private void setAdapter() {

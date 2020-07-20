@@ -272,6 +272,7 @@ public class SignUpActivity extends AppCompatActivity {
                 params.put("name",full_name);
                 params.put("user_name",user_name);
                 params.put("mobile",phone_number);
+                params.put("gender","male");
                 params.put("password",password);
                 params.put("used_refer",refer_code);
                 params.put("latitude",String.valueOf(latitude));

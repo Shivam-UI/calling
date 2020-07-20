@@ -1,347 +1,390 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
-    android:background="@color/white"
     tools:context=".Fragments.ProfileFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <ScrollView
-        android:fillViewport="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-
-
-
-
-    <LinearLayout
-        android:layout_margin="10dp"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <androidx.cardview.widget.CardView
-            app:cardCornerRadius="10dp"
-            app:cardUseCompatPadding="true"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
 
             <LinearLayout
-                android:paddingBottom="20dp"
-                android:paddingTop="20dp"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
 
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/iv_user_image"
-                    android:layout_width="80dp"
-                    android:layout_gravity="center"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/launch"
-                    android:layout_height="80dp"/>
-
-                <TextView
-
-                    android:id="@+id/tv_name"
-                    android:textSize="17sp"
-                    android:text="user name"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-                <TextView
-
-                    android:id="@+id/tv_user_name"
-                    android:textSize="17sp"
-                    android:text="sam123"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:maxLines="1"
-
-                    android:textColor="@color/dark_gray"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-
-                <Button
-                    android:id="@+id/bt_logout"
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center"
-                    android:textColor="@color/white"
-                    android:textAllCaps="false"
-                    android:text="Logout"
-                    android:background="@drawable/solid_bt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"/>
-
-
-                <LinearLayout
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="10dp"
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
-
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content">
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/iv_user_image"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_gravity="center"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/launch"
+                            app:civ_border_color="@color/black"
+                            app:civ_border_width="1dp" />
 
                         <TextView
-                            android:id="@+id/tv_call_coins"
-                            android:textSize="17sp"
-                            android:text="0"
+
+                            android:id="@+id/tv_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-
-                            android:maxLines="1"
-
                             android:gravity="center"
+                            android:maxLines="1"
+                            android:text="user name"
                             android:textColor="@color/black"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
                         <TextView
 
-
-
-                            android:text="Call Coins"
-                            android:layout_marginTop="10dp"
-
-                            android:maxLines="1"
-                            android:gravity="center"
-                            android:textColor="@color/dark_gray"
+                            android:id="@+id/tv_user_name"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:maxLines="1"
+
+                            android:text="sam123"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="17sp" />
+
+
+                        <Button
+                            android:id="@+id/bt_logout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/solid_bt"
+                            android:text="Logout"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_call_coins"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+
+                                    android:gravity="center"
+
+                                    android:maxLines="1"
+                                    android:text="0"
+                                    android:textColor="@color/black"
+                                    android:textSize="17sp" />
+
+                                <TextView
+
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+
+                                    android:layout_marginTop="10dp"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="Call Coins"
+                                    android:textColor="@color/dark_gray" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_chat_coins"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+
+                                    android:text="0"
+                                    android:textColor="@color/black"
+                                    android:textSize="17sp" />
+
+                                <TextView
+
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+
+                                    android:layout_marginTop="10dp"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="Chat Coins"
+                                    android:textColor="@color/dark_gray" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/tv_refer_code"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/primary_clr_bt"
+                            android:text="Refer"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/tv_chat_coins"
-                            android:textSize="17sp"
-                            android:text="0"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:maxLines="1"
-
-                            android:textColor="@color/black"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-
-
-                            android:text="Chat Coins"
-                            android:layout_marginTop="10dp"
-
-                            android:maxLines="1"
-                            android:gravity="center"
-                            android:textColor="@color/dark_gray"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-
-                </LinearLayout>
-                <Button
-                    android:id="@+id/tv_refer_code"
-                    android:layout_marginTop="20dp"
-                    android:layout_gravity="center"
-                    android:textColor="@color/white"
-                    android:textAllCaps="false"
-                    android:text="Refer"
-                    android:background="@drawable/primary_clr_bt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"/>
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            app:cardCornerRadius="10dp"
-            app:cardUseCompatPadding="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="20dp"
-                android:paddingTop="10dp"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
-
-                <LinearLayout
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-
-
-                        android:text="Information"
-
-                        android:textSize="17sp"
-                        android:gravity="start"
-                        android:maxLines="1"
-                        android:textStyle="bold"
-                        android:layout_weight="1"
-                        android:textColor="@color/black"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/tv_edit_profile"
-                        android:text="Edit"
-
-                        android:maxLines="1"
-
-                        android:layout_weight="1"
-                      android:gravity="end"
-                        android:textColor="@color/dark_gray"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-
-
-
-
-                <LinearLayout
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-
-
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal">
 
                         <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/coin" />
 
-                            android:textSize="17sp"
-                            android:text="0"
-                            android:padding="10dp"
-                            android:src="@drawable/profile"
-                            android:background="@drawable/gray_circle"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
                         <TextView
-                            android:id="@+id/tv_full_name"
-                            android:layout_marginStart="10dp"
-
-                            android:text=""
-
+                            android:id="@+id/tv_income_coin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:maxLines="1"
-                            android:gravity="start"
-                            android:textColor="@color/dark_gray"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_marginLeft="5dp"
+                            android:text="0" />
 
+                    </LinearLayout>
 
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/call_duration" />
+
+                        <TextView
+                            android:id="@+id/tv_total_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="5dp"
+                            android:text="9:05:45 HRS" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="10dp"
+                    app:cardUseCompatPadding="true">
 
-
-
-
-                    <ImageView
-
-                        android:textSize="17sp"
-                        android:text="0"
-                        android:padding="10dp"
-                        android:src="@drawable/chat"
-                        android:background="@drawable/gray_circle"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"/>
-                    <TextView
-
-                        android:id="@+id/tv_user_name2"
-                        android:layout_marginStart="10dp"
-
-                        android:layout_gravity="center_vertical"
-                        android:maxLines="1"
-                        android:gravity="start"
-                        android:textColor="@color/dark_gray"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingStart="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="20dp">
 
 
-                </LinearLayout>
-            </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
 
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            app:cardCornerRadius="10dp"
-            app:cardUseCompatPadding="true"
-            android:layout_width="match_parent"
-            android:layout_height="150dp">
-
-            <LinearLayout
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="20dp"
-                android:paddingTop="10dp"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                            <TextView
 
 
+                                android:layout_width="0dp"
 
-                <LinearLayout
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="start"
+                                android:maxLines="1"
+                                android:text="Information"
+                                android:textColor="@color/black"
+                                android:textSize="17sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_edit_profile"
+                                android:layout_width="0dp"
+
+                                android:layout_height="wrap_content"
+
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:maxLines="1"
+                                android:text="Edit"
+                                android:textColor="@color/dark_gray" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:orientation="horizontal">
+
+
+                            <ImageView
+
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/gray_circle"
+                                android:padding="10dp"
+                                android:src="@drawable/profile"
+                                android:text="0"
+                                android:textSize="17sp" />
+
+                            <TextView
+                                android:id="@+id/tv_full_name"
+                                android:layout_width="match_parent"
+
+                                android:layout_height="wrap_content"
+
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="10dp"
+                                android:gravity="start"
+                                android:maxLines="1"
+                                android:text=""
+                                android:textColor="@color/dark_gray" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:orientation="horizontal">
+
+
+                            <ImageView
+
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/gray_circle"
+                                android:padding="10dp"
+                                android:src="@drawable/chat"
+                                android:text="0"
+                                android:textSize="17sp" />
+
+                            <TextView
+
+                                android:id="@+id/tv_user_name2"
+                                android:layout_width="match_parent"
+
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="10dp"
+                                android:gravity="start"
+                                android:maxLines="1"
+                                android:textColor="@color/dark_gray" />
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
+                    android:layout_height="150dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardUseCompatPadding="true">
 
-                        android:textSize="17sp"
-                        android:text="Purchase History"
-
-                        android:gravity="start"
-                        android:maxLines="1"
-                        android:textStyle="bold"
-                        android:layout_weight="1"
-                        android:textColor="@color/black"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
-
-
-                </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingStart="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="20dp">
 
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+
+                                android:layout_weight="1"
+                                android:gravity="start"
+                                android:maxLines="1"
+                                android:text="Purchase History"
+                                android:textColor="@color/black"
+                                android:textSize="17sp"
+                                android:textStyle="bold" />
 
 
+                        </LinearLayout>
 
 
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
-    </ScrollView>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 </FrameLayout>
