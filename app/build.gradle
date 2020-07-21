@@ -6,7 +6,7 @@ android {
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "com.lgt.twowink"
+        applicationId "com.lgt.twowinkApp"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
@@ -84,5 +84,7 @@ dependencies {
     implementation 'com.github.f0ris.sweetalert:library:1.5.1'
 
     implementation 'io.agora.rtc:full-sdk:3.0.0'
+    // permission lib
+    implementation 'com.karumi:dexter:6.2.1'
 
 }

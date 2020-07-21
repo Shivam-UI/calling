@@ -82,6 +82,9 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 Log.d("data", response.toString());
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.error(R.drawable.profile);
+                requestOptions.placeholder(R.drawable.profile);
                 JSONObject jsonObject = null;
                 try {
                     jsonObject = new JSONObject(response);
@@ -98,7 +101,8 @@ public class ProfileFragment extends Fragment {
                         tv_chat_coins.setText(DataObject.getString("chat_coin"));
                         tv_full_name.setText(DataObject.getString("name"));
                         tv_user_name2.setText(DataObject.getString("user_name"));
-
+                        Glide.with(getActivity()).applyDefaultRequestOptions(requestOptions).load(DataObject.getString("user_image"))
+                                .diskCacheStrategy(DiskCacheStrategy.ALL).into(iv_user_image);
                         swipeRefresh.setRefreshing(false);
                     } else if (status.equals("0")) {
                         Toast.makeText(getContext(), "Something Went Wrong!", Toast.LENGTH_SHORT).show();

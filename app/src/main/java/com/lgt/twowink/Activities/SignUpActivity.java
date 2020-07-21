@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -159,14 +160,14 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         if (isfilled){
-            if (Build.VERSION.SDK_INT >= 23) {
+            /*if (Build.VERSION.SDK_INT >= 23) {
                 checkPermissions();
-            }
+            }else {
 
-
+               getLATLNG();
+            }*/
+            callSignUpApi();
         }
-
-
     }
 
     private boolean checkPermissions() {
@@ -184,8 +185,7 @@ public class SignUpActivity extends AppCompatActivity {
                             String[listPermissionsNeeded.size()]), 100);
             return false;
         } else {
-            getLATLNG();
-
+            //getLATLNG();
         }
         return true;
     }
@@ -193,11 +193,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void getLATLNG() {
         final LocationManager locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         boolean network_enabled = locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-
         if (network_enabled) {
-
-
             final Location location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
             if (location != null) {
@@ -216,9 +212,9 @@ public class SignUpActivity extends AppCompatActivity {
         if (requestCode == 100) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                //getLATLNG();
             } else {
-                getLATLNG();
+                Toast.makeText(context, "Location Not Found! \n Give Permission First!", Toast.LENGTH_SHORT).show();
             }
             return;
         }
