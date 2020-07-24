@@ -107,14 +107,6 @@ public class CallsFragment extends Fragment {
     }
 
     private void loadNearbyDates(List<CurrentCallsModel> chat_convers_list) {
-        /*chat_convers_list.clear();
-        chat_convers_list.add(new CurrentCallsModel("Jimmy shu", DummyUrls.nearby_dates1, "dsgfdsfdfsgdfsgdsgdsdsdsdsdsd", "online"));
-        chat_convers_list.add(new CurrentCallsModel("Jimmy shu", DummyUrls.nearby_dates2, "dsgfdsfdfsgdfsgdsgdsdsdsdsdsd", "offline"));
-        chat_convers_list.add(new CurrentCallsModel("Jimmy shu", DummyUrls.nearby_dates3, "dsgfdsfdfsgdfsgdsgdsdsdsdsdsd", "online"));
-        chat_convers_list.add(new CurrentCallsModel("Jimmy shu", DummyUrls.nearby_dates4, "dsgfdsfdfsgdfsgdsgdsdsdsdsdsd", "online"));
-        chat_convers_list.add(new CurrentCallsModel("Jimmy shu", DummyUrls.nearby_dates2, "dsgfdsfdfsgdfsgdsgdsdsdsdsdsd", "online"));
-        chat_convers_list.add(new CurrentCallsModel("Jimmy shu", DummyUrls.nearby_dates3, "dsgfdsfdfsgdfsgdsgdsdsdsdsdsd", "offline"));*/
-
         currentConversationAdapter = new CurrentCallsAdapter(getActivity(),chat_convers_list);
         rv_current_chat.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);

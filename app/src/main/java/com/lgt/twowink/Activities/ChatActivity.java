@@ -206,7 +206,6 @@ public class ChatActivity extends AppCompatActivity {
             tv_username.setText(user_name);
             Glide.with(context).load(user_image).diskCacheStrategy(DiskCacheStrategy.ALL).into(iv_user_image);
 
-
             Log.e("from_key", from_key + "");
         }
     }
@@ -261,6 +260,27 @@ public class ChatActivity extends AppCompatActivity {
                     if (status.equalsIgnoreCase("1")) {
                         String coins = jsonObject.getString("coins");
                         saveUserDetail(coins);
+                    }else if(status.equalsIgnoreCase("0")){
+                        SweetAlertDialog pDialog = new SweetAlertDialog(ChatActivity.this, SweetAlertDialog.WARNING_TYPE);
+                        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                        pDialog.setTitleText(message);
+                        pDialog.setCancelable(true);
+                        pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                                Intent packageList = new Intent(ChatActivity.this, PackagesListActivity.class);
+                                packageList.putExtra("KEY_TYPE","Message");
+                                startActivity(packageList);
+                            }
+                        });
+                        pDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        });
+                        pDialog.show();
                     }
 
                 } catch (JSONException e) {

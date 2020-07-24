@@ -20,3 +20,5 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keep class io.agora.**{*;}
+# Rules for Instamojo SDK
+-keep class com.instamojo.android.**{*;}

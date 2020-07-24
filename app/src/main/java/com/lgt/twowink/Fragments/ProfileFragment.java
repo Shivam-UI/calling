@@ -33,6 +33,7 @@ import com.lgt.twowink.Extras.Commn;
 import com.lgt.twowink.Extras.MyApi;
 import com.lgt.twowink.Extras.SessionManager;
 import com.lgt.twowink.Interface.UpdateUserDetails;
+import com.lgt.twowink.Model.UserDetails;
 import com.lgt.twowink.R;
 
 import org.json.JSONException;
@@ -50,11 +51,11 @@ public class ProfileFragment extends Fragment {
 
     private Button bt_logout, tv_refer_code;
     private TextView tv_total_time,tv_name, tv_user_name, tv_call_coins, tv_chat_coins, tv_full_name, tv_user_name2, tv_edit_profile,tv_income_coin;
-    private String UserId;
+    private String UserId,mobile,ref_code;
     private CircleImageView iv_user_image;
     private SessionManager sessionManager;
     private SwipeRefreshLayout swipeRefresh;
-
+    UserDetails userDetails;
     public static ProfileFragment instance;
 
     public ProfileFragment() {
@@ -67,10 +68,12 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-
+        userDetails = new UserDetails();
         instance = this;
         iniViews(view);
         UserId = sessionManager.getUser(getContext()).getUser_id();
+        mobile = sessionManager.getUser(getContext()).getMobile();
+        ref_code = sessionManager.getUser(getContext()).getRefer_code();
         getUserData();
         setOnRefresh();
         return view;
@@ -92,13 +95,21 @@ public class ProfileFragment extends Fragment {
                     String message = jsonObject.getString("message");
                     String status = jsonObject.getString("status");
                     if (status.equals("1")) {
-                        //DataObject.getString("user_image");
+                        // DataObject.getString("user_image");
                         tv_name.setText(DataObject.getString("name"));
                         tv_user_name.setText(DataObject.getString("user_name"));
                         tv_income_coin.setText(DataObject.getString("income"));
                         tv_total_time.setText("05:15:45 HRS");
                         tv_call_coins.setText(DataObject.getString("call_coin"));
                         tv_chat_coins.setText(DataObject.getString("chat_coin"));
+                        userDetails.setUser_id(UserId);
+                        userDetails.setName(DataObject.getString("name"));
+                        userDetails.setUser_name(DataObject.getString("user_name"));
+                        userDetails.setMobile(mobile);
+                        userDetails.setCall_coin(DataObject.getString("call_coin"));
+                        userDetails.setChat_coin(DataObject.getString("chat_coin"));
+                        userDetails.setRefer_code(ref_code);
+                        userDetails.setUser_image(DataObject.getString("user_image"));
                         tv_full_name.setText(DataObject.getString("name"));
                         tv_user_name2.setText(DataObject.getString("user_name"));
                         Glide.with(getActivity()).applyDefaultRequestOptions(requestOptions).load(DataObject.getString("user_image"))
@@ -107,6 +118,7 @@ public class ProfileFragment extends Fragment {
                     } else if (status.equals("0")) {
                         Toast.makeText(getContext(), "Something Went Wrong!", Toast.LENGTH_SHORT).show();
                     }
+                    sessionManager.setUser(getContext(),userDetails);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
