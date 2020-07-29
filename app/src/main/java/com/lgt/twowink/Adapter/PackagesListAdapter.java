@@ -33,6 +33,7 @@ public class PackagesListAdapter extends RecyclerView.Adapter<PackagesListAdapte
         this.playmentMethod = mMethod;
     }
 
+
     @NonNull
     @Override
     public PackagesListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -47,7 +48,7 @@ public class PackagesListAdapter extends RecyclerView.Adapter<PackagesListAdapte
         final String u_id = sessionManager.getUser(context).getUser_id();
         final String u_name = sessionManager.getUser(context).getUser_name();
         final String u_number = sessionManager.getUser(context).getMobile();
-        final String u_email = "createdinam@gmail.com";
+        final String u_email = "test@gmail.com";
         final PackagesModel model = list.get(position);
         try {
 
@@ -61,7 +62,8 @@ public class PackagesListAdapter extends RecyclerView.Adapter<PackagesListAdapte
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    playmentMethod.makePayment(position,u_id,model.getPackage_name(),model.getPrice(),u_number,u_name,u_email);
+                    // position,user_id,package_name,price,mobile_number,_user_name,user_email
+                    playmentMethod.makePayment(model.getTbl_package_id(),u_id,model.getPackage_name(),model.getPrice(),u_number,u_name,u_email);
                 }
             });
 

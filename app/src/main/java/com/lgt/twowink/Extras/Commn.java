@@ -37,7 +37,7 @@ public class Commn {
     public static String USER_ID="USER_ID";
     public static String Tokens="Tokens";
     public static String user_token="user_token";
-
+    public static String PAYMENT_TOKEN = "rzp_test_EJhG74v8Bq5DzZ";
     // notification keys
     public static final String NOTIFICATION_REPLY = "NotificationReply";
     public static final String CHANNNEL_ID = "SimplifiedCodingChannel";

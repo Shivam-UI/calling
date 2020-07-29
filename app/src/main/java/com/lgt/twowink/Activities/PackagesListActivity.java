@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.JsonObject;
 import com.instamojo.android.Instamojo;
 import com.instamojo.android.helpers.Constants;
+import com.instamojo.android.models.Order;
 import com.lgt.twowink.Adapter.PackagesListAdapter;
 import com.lgt.twowink.Extras.Commn;
 import com.lgt.twowink.Extras.MyApi;
@@ -36,31 +38,37 @@ import com.lgt.twowink.Extras.SessionManager;
 import com.lgt.twowink.Interface.PlaymentMethod;
 import com.lgt.twowink.Model.PackagesModel;
 import com.lgt.twowink.Model.PaymentModel;
+import com.lgt.twowink.PG.ChecksumUtils;
 import com.lgt.twowink.R;
+import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 
 import static com.lgt.twowink.Extras.PaymentGate.getApiService;
 
-public class PackagesListActivity extends AppCompatActivity implements PlaymentMethod, Instamojo.InstamojoPaymentCallback {
+public class PackagesListActivity extends AppCompatActivity implements PlaymentMethod, PaymentResultListener {
 
     // PAYMENT
     private static final HashMap<Instamojo.Environment, String> env_options = new HashMap<>();
     private Instamojo.Environment mCurrentEnv = Instamojo.Environment.TEST;
     private boolean mCustomUIFlow = false;
-
+    private static final String TAG = "Razorpay";
     private PackagesListAdapter adapter;
     private RecyclerView rv_package_list;
     private List<PackagesModel> package_list = new ArrayList<>();
@@ -71,19 +79,22 @@ public class PackagesListActivity extends AppCompatActivity implements PlaymentM
     private SwipeRefreshLayout package_swipe_refresh;
     private Intent intent;
     SessionManager sessionManager;
+    Checkout checkout;
+    Calendar cal;
+    String Calling_time,package_ID,package_Name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_packages_list);
         context = activity = this;
+        checkout = new Checkout();
         iniViews();
+        Checkout.preload(getApplicationContext());
         sessionManager = new SessionManager();
         intent = getIntent();
         Log.d("from_", intent.getStringExtra("KEY_TYPE"));
-      //  Instamojo.getInstance().initialize(this, Instamojo.Environment.PRODUCTION);
         setOnSwipeRefresh();
-        //getAccessToken();
     }
 
     private void iniViews() {
@@ -186,155 +197,7 @@ public class PackagesListActivity extends AppCompatActivity implements PlaymentM
 
     }
 
-    String orderId = "";
-
-    /*@Override
-    public void makePayment(final int position) {
-        PackagesModel packagesModel = package_list.get(position);
-        //  Log.e("pay_req",position+" "+u_id+" "+Number+" "+price+" "+u_name+" "+u_email);
-        // init payment
-        Instamojo.getInstance().initialize(this, Instamojo.Environment.PRODUCTION);
-        // server call
-        *//**//*
-     *//*Map<String,String> param = new HashMap<>();
-        param.put("allow_repeated_payments","false");
-        param.put("amount",price);
-        param.put("buyer_name",u_name);
-        param.put("purpose",pack_name);
-        param.put("phone",Number);
-        param.put("send_email","true");
-        param.put("send_sms","true");
-        param.put("email",u_email);
-        Call<PaymentModel> call = PaymentGate.getApiService().makePayment(MyApi.X_Api_Key,MyApi.X_Auth_Token,param);
-        call.enqueue(new Callback<PaymentModel>() {
-            @Override
-            public void onResponse(Call<PaymentModel> call, retrofit2.Response<PaymentModel> response) {
-                Log.d("responce",call.toString()+""+response.body());
-            }
-
-            @Override
-            public void onFailure(Call<PaymentModel> call, Throwable t) {
-                Log.d("",call+""+t.getLocalizedMessage());
-            }
-        });*//*
-        orderId = getRandomString(10);
-        Instamojo.getInstance().initiatePayment(PackagesListActivity.this, orderId, PackagesListActivity.this);
-
-        getAccessToken(packagesModel);
-    }*/
-
-    private static final String ALLOWED_CHARACTERS = "qwertyuiopasdfghjklzxcvbnm";
-
-    private static String getRandomString(final int sizeOfRandomString) {
-        final Random random = new Random();
-        final StringBuilder sb = new StringBuilder(sizeOfRandomString);
-        for (int i = 0; i < sizeOfRandomString; ++i)
-            sb.append(ALLOWED_CHARACTERS.charAt(random.nextInt(ALLOWED_CHARACTERS.length())));
-        return sb.toString();
-    }
-
-    ProgressDialog progressDialog;
-
-    private void getAccessToken(final PackagesModel packagesModel) {
-        RequestQueue mRequestQue = Volley.newRequestQueue(context);
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Please Wait...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        try {
-            JSONObject object = new JSONObject();
-            object.put("client_id", MyApi.CLIENT_ID);
-            object.put("client_secret", MyApi.SECRET_KEY);
-            object.put("grant_type", "client_credentials");
-            StringRequest jsonRequest = new StringRequest(Request.Method.POST, "https://api.instamojo.com/oauth2/token/", new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    progressDialog.dismiss();
-                    try {
-                        Log.d("Response", response.toString());
-                        JSONObject jsonObject = new JSONObject(response);
-                        //intializePayment(jsonObject.getString("token_type")+" "+jsonObject.getString("access_token"),packagesModel);
-
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    progressDialog.dismiss();
-                    Log.d("Error", error.toString());
-                }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> object = new HashMap<>();
-                    object.put("client_id", MyApi.CLIENT_ID);
-                    object.put("client_secret", MyApi.SECRET_KEY);
-                    object.put("grant_type", "client_credentials");
-                    return object;
-                }
-            };
-            mRequestQue.add(jsonRequest);
-        } catch (Exception e0) {
-            e0.printStackTrace();
-        }
-    }
-
-    String orderUrl = "https://api.instamojo.com";
-
-    private void getOrderId() {
-        try {
-            JSONObject param = new JSONObject();
-            param.put("amount", "25");
-            param.put("purpose", "Buy");
-            param.put("buyer_name", "Shivam");
-            param.put("email ", "createdinam@gmail.com");
-            param.put("phone", "9999870918");
-            param.put("currency ", "INR");
-            param.put("send_email ", "true");
-            param.put("send_sms ", "true");
-            //param.put("RedirectURL ", orderUrl + "/integrations/android/redirect/");
-            JsonObjectRequest paymentRequest = new JsonObjectRequest(Request.Method.POST, MyApi.PAYMENT_URL, param, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    Log.d("resp_pay", "" + response);
-                    try {
-                        JSONObject jsonObject = response.getJSONObject("payment_request");
-                        Log.d("long_url", "" + jsonObject.getString("longurl"));
-                        Log.d("long_url", "" + jsonObject.getString("id"));
-                        Instamojo.getInstance().initialize(PackagesListActivity.this, Instamojo.Environment.TEST);
-                        Instamojo.getInstance().initiatePayment(PackagesListActivity.this, jsonObject.getString("id"), PackagesListActivity.this);
-                      //  Instamojo.getInstance().initiatePayment(PackagesListActivity.this, jsonObject.getString("longurl"), PackagesListActivity.this);
-                        //Instamojo.getInstance().initiatePayment(PackagesListActivity.this, jsonObject.getString("id"), PackagesListActivity.this);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("error_pay", "" + error.toString());
-                }
-            }) {
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> header = new HashMap<>();
-                    header.put("X-Api-Key", MyApi.X_Api_Key);
-                    header.put("X-Auth-Token", MyApi.X_Auth_Token);
-                    return header;
-                }
-            };
-            // Commn.requestQueue(this, paymentRequest);
-            Volley.newRequestQueue(this).add(paymentRequest);
-        } catch (Exception e) {
-            Log.d("error_pay", "" + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    private void intializePayment(final String token, PackagesModel packagesModel) {
+    /*private void intializePayment(final String token, PackagesModel packagesModel) {
         Log.d("init_payment", "payment_test");
         RequestQueue mRequestQue = Volley.newRequestQueue(context);
         try {
@@ -359,7 +222,7 @@ public class PackagesListActivity extends AppCompatActivity implements PlaymentM
                             try {
                                 JSONObject jsonObject = response.getJSONObject("payment_request");
                                 String Order_id = jsonObject.getString("id");
-                                Instamojo.getInstance().initiatePayment(PackagesListActivity.this, Order_id, PackagesListActivity.this);
+
                             } catch (Exception d) {
                                 Log.d("error", "" + d);
                             }
@@ -386,48 +249,118 @@ public class PackagesListActivity extends AppCompatActivity implements PlaymentM
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    public void makePay() {
-
-    }
-
+    // position,user_id,package_name,price,mobile_number,user_name,user_email
     @Override
-    public void onInstamojoPaymentComplete(String orderID, String transactionID, String paymentID, String paymentStatus) {
-        Log.d("PAY_TAG", "Payment complete. Order ID: " + orderID + ", Transaction ID: " + transactionID
-                + ", Payment ID:" + paymentID + ", Status: " + paymentStatus);
-    }
-
-    @Override
-    public void onPaymentCancelled() {
-        Log.d("ERROR_TAG", "Payment cancelled");
-    }
-
-    @Override
-    public void onInitiatePaymentFailure(String errorMessage) {
-        Log.d("Payment_Failure_TAG", "Initiate payment failed");
-        Toast.makeText(context, "Initiating payment failed. Error: " + errorMessage, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.REQUEST_CODE && data != null) {
-            String orderID = data.getStringExtra(Constants.ORDER_ID);
-            String transactionID = data.getStringExtra(Constants.TRANSACTION_ID);
-            String paymentID = data.getStringExtra(Constants.PAYMENT_ID);
-
-            // Check transactionID, orderID, and orderID for null before using them to check the Payment status.
-            if (transactionID != null || paymentID != null) {
-                Log.d("Payment_Success", transactionID + orderID);
-            } else {
-                Log.d("Payment_Failure_TAG", "Oops!! Payment was cancelled");
-            }
+    public void makePayment(String item_position, String user_id, String pack_name, String pack_price, String mobile_number, String user_name, String user_email) {
+        // getOrderId();
+        Log.d("In_Payment", "status" + pack_price);
+        // set payment
+        int update_pack_price = 0;
+        package_ID = "";package_Name= "";
+        package_ID = item_position;
+        package_Name = pack_name;
+        // change price
+        update_pack_price = Integer.parseInt(pack_price) * 100;
+        checkout.setKeyID(Commn.PAYMENT_TOKEN);
+        /**
+         * Set your logo here
+         */
+        checkout.setImage(R.drawable.icon);
+        /**
+         * Reference to current activity
+         */
+        final Activity activity = this;
+        /**
+         * Pass your payment options to the Razorpay Checkout as a JSONObject
+         */
+        try {
+            JSONObject options = new JSONObject();
+            options.put("name", user_name);
+            options.put("description", package_Name);
+            options.put("currency", "INR");
+            options.put("amount", update_pack_price); //pass amount in currency subunits
+            options.put("prefill.email", user_email);
+            options.put("prefill.contact",mobile_number);
+            checkout.open(activity, options);
+        } catch (Exception e) {
+            Log.e(TAG, "Error in starting Razorpay Checkout", e);
         }
     }
 
     @Override
-    public void makePayment(int position, String u_id, String pack_name, String Number, String price, String u_name, String u_email) {
-        getOrderId();
+    public void onPaymentSuccess(String status) {
+        Log.d("PaymentSuccess","Success " + status);
+        String Status = "Successful";
+        PaymentStatus(Status,package_ID,package_Name);
+    }
+
+    @Override
+    public void onPaymentError(int i, String status) {
+        Log.d("PaymentError",i+" Something Wrong : " + status);
+        String Status = "Failed";
+        PaymentStatus(Status,package_ID,package_Name);
+    }
+
+    private void PaymentStatus(final String status,final String pack_id,final String pack_name){
+        cal = Calendar.getInstance();
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
+        int second = cal.get(Calendar.SECOND);
+        Calling_time = hour + ":" + minute + ":" + second;
+        // {"message":"Registered Successfully.","status":"1","data":{"user_id":"34","package_type":"Message",
+        // "package_coins":"2500","payment_status":"pay_FKF9vZzovmhtGr","transection_id":"123456789","getway_response":"Pink message"}}
+        StringRequest mPaymentRequest = new StringRequest(Request.Method.POST, MyApi.pack_purchase_api, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("PaymentResponse","Success " + response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String message = jsonObject.getString("message");
+                    String status = jsonObject.getString("status");
+                    if (status.equalsIgnoreCase("1")) {
+                        JSONObject pay_info = jsonObject.getJSONObject("data");
+                        String coin_have = pay_info.getString("package_coins");
+                        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(PackagesListActivity.this,SweetAlertDialog.SUCCESS_TYPE);
+                        sweetAlertDialog.setTitle("Congratulations");
+                        sweetAlertDialog.setContentText("Pack Activate Successful\n Enjoy your "+package_Name + " and you have" +coin_have+" coins.");
+                        sweetAlertDialog.setConfirmButton("Continue", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
+                                startActivity(new Intent(PackagesListActivity.this,MainActivity.class));
+                                finishAffinity();
+                            }
+                        });
+                        sweetAlertDialog.show();
+                    } else if (status.equalsIgnoreCase("0")) {
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }catch (JSONException ex){
+                    Log.d("error_pay",""+ex.getLocalizedMessage());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("PaymentError","Success " + error.getMessage());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> param = new HashMap<>();
+                param.put("user_id",sessionManager.getUser(getApplicationContext()).getUser_id());
+                param.put("package_id",pack_id);
+                param.put("time",Calling_time);
+                param.put("payment_status",status);
+                param.put("getway_response",pack_name);
+                param.put("transection_id","123456789");
+                return param;
+            }
+        };
+        Commn.requestQueue(this,mPaymentRequest);
     }
 }

@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
@@ -29,34 +31,44 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.lgt.twowink.Activities.EditProfile;
 import com.lgt.twowink.Activities.LaunchActivity;
+import com.lgt.twowink.Activities.MainActivity;
+import com.lgt.twowink.Activities.PackagesListActivity;
+import com.lgt.twowink.Adapter.HistroyAdapter;
 import com.lgt.twowink.Extras.Commn;
 import com.lgt.twowink.Extras.MyApi;
 import com.lgt.twowink.Extras.SessionManager;
 import com.lgt.twowink.Interface.UpdateUserDetails;
+import com.lgt.twowink.Model.HistoryModel;
 import com.lgt.twowink.Model.UserDetails;
 import com.lgt.twowink.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ProfileFragment extends Fragment {
 
-
+    HistroyAdapter histroyAdapter;
     private Button bt_logout, tv_refer_code;
-    private TextView tv_total_time,tv_name, tv_user_name, tv_call_coins, tv_chat_coins, tv_full_name, tv_user_name2, tv_edit_profile,tv_income_coin;
-    private String UserId,mobile,ref_code;
+    private TextView tv_total_time, tv_name, tv_user_name, tv_call_coins, tv_chat_coins, tv_full_name, tv_user_name2, tv_edit_profile, tv_income_coin;
+    private String UserId, mobile, ref_code;
     private CircleImageView iv_user_image;
     private SessionManager sessionManager;
     private SwipeRefreshLayout swipeRefresh;
+    private RecyclerView rv_payment_history_list;
     UserDetails userDetails;
     public static ProfileFragment instance;
+    List<HistoryModel> mList ;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -67,7 +79,7 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-
+        mList = new ArrayList<>();
         userDetails = new UserDetails();
         instance = this;
         iniViews(view);
@@ -75,6 +87,7 @@ public class ProfileFragment extends Fragment {
         mobile = sessionManager.getUser(getContext()).getMobile();
         ref_code = sessionManager.getUser(getContext()).getRefer_code();
         getUserData();
+        shoPaymentHistory(UserId);
         setOnRefresh();
         return view;
     }
@@ -118,7 +131,7 @@ public class ProfileFragment extends Fragment {
                     } else if (status.equals("0")) {
                         Toast.makeText(getContext(), "Something Went Wrong!", Toast.LENGTH_SHORT).show();
                     }
-                    sessionManager.setUser(getContext(),userDetails);
+                    sessionManager.setUser(getContext(), userDetails);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -133,7 +146,7 @@ public class ProfileFragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> param = new HashMap<>();
                 param.put("user_id", UserId);
-                Log.d("param",""+param);
+                Log.d("param", "" + param);
                 return param;
             }
         };
@@ -148,6 +161,7 @@ public class ProfileFragment extends Fragment {
         sessionManager = new SessionManager();
 
         bt_logout = view.findViewById(R.id.bt_logout);
+        rv_payment_history_list = view.findViewById(R.id.rv_payment_history_list);
         tv_total_time = view.findViewById(R.id.tv_total_time);
         tv_name = view.findViewById(R.id.tv_name);
         tv_user_name = view.findViewById(R.id.tv_user_name);
@@ -160,7 +174,10 @@ public class ProfileFragment extends Fragment {
         tv_edit_profile = view.findViewById(R.id.tv_edit_profile);
         iv_user_image = view.findViewById(R.id.iv_user_image);
         swipeRefresh = view.findViewById(R.id.swipeRefresh);
-
+        // payment history
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rv_payment_history_list.hasFixedSize();
+        rv_payment_history_list.setLayoutManager(layoutManager);
 
         bt_logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,6 +237,53 @@ public class ProfileFragment extends Fragment {
                     .diskCacheStrategy(DiskCacheStrategy.ALL).into(iv_user_image);
             swipeRefresh.setRefreshing(false);
         }
+    }
+
+    private void shoPaymentHistory(final String UserId){
+        StringRequest historyRequest = new StringRequest(Request.Method.POST, MyApi.package_purchase_list_api, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("history_Res","Success " + response);
+                mList.clear();
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String message = jsonObject.getString("message");
+                    String status = jsonObject.getString("status");
+                    if (status.equalsIgnoreCase("1")) {
+                        JSONArray jsonArray = jsonObject.getJSONArray("data");
+                        for (int i = 0;i < jsonArray.length();i++){
+                            JSONObject pay_info = jsonArray.getJSONObject(i);
+                            HistoryModel historyModel = new HistoryModel();
+                            historyModel.setTransection_id(pay_info.getString("transection_id"));
+                            historyModel.setPackage_name(pay_info.getString("package_name"));
+                            historyModel.setPackage_type(pay_info.getString("package_type"));
+                            historyModel.setPackage_coins(pay_info.getString("package_coins"));
+                            historyModel.setPayment_status(pay_info.getString("payment_status"));
+                            historyModel.setPackage_image(pay_info.getString("package_image"));
+                            historyModel.setTime(pay_info.getString("time"));
+                            mList.add(i,historyModel);
+                        }
+                        histroyAdapter = new HistroyAdapter(getContext(),mList);
+                    }
+                    rv_payment_history_list.setAdapter(histroyAdapter);
+                }catch (JSONException ex){
+                    Log.d("error_history",""+ex.getLocalizedMessage());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("history_Error","Success " + error.getMessage());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> param = new HashMap<>();
+                param.put("user_id",UserId);
+                return param;
+            }
+        };
+        Commn.requestQueue(getContext(),historyRequest);
     }
 
     private void logoutDialog() {

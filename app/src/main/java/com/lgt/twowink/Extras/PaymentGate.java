@@ -20,7 +20,7 @@ public class PaymentGate {
 
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(MyApi.PAYMENT_URL)
+                .baseUrl(MyApi.pack_purchase_api)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
