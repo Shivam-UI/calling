@@ -8,7 +8,6 @@
     tools:context=".Activities.ChatActivity">
 
 
-
     <RelativeLayout
         android:id="@+id/RL_HEAD"
         android:background="@color/colorPrimary"

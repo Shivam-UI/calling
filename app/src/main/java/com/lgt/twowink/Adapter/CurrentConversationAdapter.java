@@ -77,7 +77,6 @@ public class CurrentConversationAdapter extends RecyclerView.Adapter<CurrentConv
             holder.iv_online_offline.setImageDrawable(context.getResources().getDrawable(R.drawable.offline));
             getUserVisibility(model.getFrom(), holder, context);
 
-
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
